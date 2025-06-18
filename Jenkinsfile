@@ -23,7 +23,7 @@ pipeline {
 
         // AWS EKS
         AWS_REGION = 'ap-south-1'
-        EKS_CLUSTER = 'demo-cluster'
+        EKS_CLUSTER = 'ankit-cluster'
     }
 
     tools {
