@@ -13,7 +13,7 @@ pipeline {
 
         // SonarQube
         SONAR_PROJECT_KEY = 'actuator-demo'
-        SONAR_PROJECT_NAME = 'Actuator Demo'
+        SONAR_PROJECT_NAME = 'actuator-demo'
 
         SONAR_BINARIES = 'target/classes'
 
