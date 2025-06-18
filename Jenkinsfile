@@ -19,12 +19,12 @@ pipeline {
 
         // Docker
         DOCKERHUB_USER = 'mayur22899'
-        IMAGE_NAME = 'ekart-app'
+        IMAGE_NAME = 'actuator-app'
         DOCKERFILE_PATH = 'docker/Dockerfile'
 
         // AWS EKS
         AWS_REGION = 'ap-south-1'
-        EKS_CLUSTER = 'ankit-cluster'
+        EKS_CLUSTER = 'demo-cluster'
     }
 
     tools {
