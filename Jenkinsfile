@@ -8,12 +8,13 @@ pipeline {
         JAVA_HOME = tool 'jdk-17'
 
         // GitHub
-        GIT_REPO_URL = 'https://github.com/mayur0522/Ekart.git'
+        GIT_REPO_URL = 'https://github.com/mayur0522/actuator-demo.git'
         GIT_BRANCH = 'master'
 
         // SonarQube
-        SONAR_PROJECT_KEY = 'EKART'
-        SONAR_PROJECT_NAME = 'EKART'
+        SONAR_PROJECT_KEY = 'actuator-demo'
+        SONAR_PROJECT_NAME = 'Actuator Demo'
+
         SONAR_BINARIES = 'target/classes'
 
         // Docker
