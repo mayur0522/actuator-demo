@@ -89,12 +89,14 @@ pipeline {
             }
         }
 
-        stage('Push Image to Docker Hub') {
+         stage('Push image to Hub') {
             steps {
-                withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
-                    sh 'docker login -u $DOCKERHUB_USER -p $dockerhubpwd'
+                script {
+                    withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
+                        sh 'docker login -u mayur22899 -p ${dockerhubpwd}'
+                    }
+                    sh 'docker push mayur22899/actuator-demo'
                 }
-                sh "docker push ${DOCKERHUB_USER}/${IMAGE_NAME}"
             }
         }
 
