@@ -14,7 +14,6 @@ pipeline {
         // SonarQube
         SONAR_PROJECT_KEY = 'actuator-demo'
         SONAR_PROJECT_NAME = 'actuator-demo'
-
         SONAR_BINARIES = 'target/classes'
 
         // Docker
@@ -77,8 +76,12 @@ pipeline {
 
         stage('Deploy to Nexus') {
             steps {
-                withMaven(globalMavenSettingsConfig: 'global-maven', jdk: 'jdk-17', maven: 'maven3', traceability: true) {
-                    sh "${MAVEN_HOME}/bin/mvn deploy -DskipTests=true"
+                withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
+                    sh """
+                        ${MAVEN_HOME}/bin/mvn deploy -DskipTests=true \
+                        -DaltDeploymentRepository=maven-snapshots::default::http://43.205.214.209:8081/repository/maven-snapshots/ \
+                        -Dusername=${NEXUS_USER} -Dpassword=${NEXUS_PASS}
+                    """
                 }
             }
         }
@@ -89,13 +92,13 @@ pipeline {
             }
         }
 
-         stage('Push image to Hub') {
+        stage('Push image to Hub') {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
                         sh 'docker login -u mayur22899 -p ${dockerhubpwd}'
                     }
-                    sh 'docker push mayur22899/actuator-demo'
+                    sh "docker push ${DOCKERHUB_USER}/${IMAGE_NAME}"
                 }
             }
         }
