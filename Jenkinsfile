@@ -9,7 +9,7 @@ pipeline {
 
         // GitHub
         GIT_REPO_URL = 'https://github.com/mayur0522/actuator-demo.git'
-        GIT_BRANCH = 'master'
+        GIT_BRANCH = 'main'
 
         // SonarQube
         SONAR_PROJECT_KEY = 'actuator-demo'
