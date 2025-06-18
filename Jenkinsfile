@@ -74,17 +74,17 @@ pipeline {
             }
         }
 
-        stage('Deploy to Nexus') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
-                    sh """
-                        ${MAVEN_HOME}/bin/mvn deploy -DskipTests=true \
-                        -DaltDeploymentRepository=maven-snapshots::default::http://43.205.214.209:8081/repository/maven-snapshots/ \
-                        -Dusername=${NEXUS_USER} -Dpassword=${NEXUS_PASS}
-                    """
-                }
-            }
+       stage('Deploy to Nexus') {
+    steps {
+        withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
+            sh """
+                ${MAVEN_HOME}/bin/mvn deploy -DskipTests=true \
+                -DaltDeploymentRepository=maven-snapshots::default::http://${NEXUS_USER}:${NEXUS_PASS}@43.205.214.209:8081/repository/maven-snapshots/
+            """
         }
+    }
+}
+
 
         stage('Build and Tag Docker Image') {
             steps {
