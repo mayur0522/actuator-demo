@@ -104,17 +104,20 @@ pipeline {
             }
         }
 
-        stage('Push Docker Image to DockerHub') {
-            steps {
-                echo "Pushing Docker image to DockerHub..."
-                script {
-                    withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
-                        sh 'docker login -u ${DOCKERHUB_USER} -p ${dockerhubpwd}'
-                        sh "docker push ${DOCKERHUB_USER}/${IMAGE_NAME}"
-                    }
-                }
+      stage('Push Docker Image to DockerHub') {
+    steps {
+        echo "Pushing Docker image to DockerHub..."
+        script {
+            withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
+                sh """
+                    echo "${dockerhubpwd}" | docker login -u "${DOCKERHUB_USER}" --password-stdin
+                    docker push ${DOCKERHUB_USER}/${IMAGE_NAME}
+                """
             }
         }
+    }
+}
+
 
         stage('Configure AWS EKS Access') {
             steps {
