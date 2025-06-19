@@ -79,7 +79,7 @@ pipeline {
         withCredentials([usernamePassword(credentialsId: 'nexus-creds', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
             sh """
                 ${MAVEN_HOME}/bin/mvn deploy -DskipTests=true \
-                -DaltDeploymentRepository=maven-snapshots::default::http://${NEXUS_USER}:${NEXUS_PASS}@3.109.189.239/8081/repository/maven-snapshots/
+                -DaltDeploymentRepository=maven-snapshots::default::http://${NEXUS_USER}:${NEXUS_PASS}@3.109.189.239:8081/repository/maven-snapshots/
             """
         }
     }
