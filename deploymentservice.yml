@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment # Kubernetes resource kind we are creating
+metadata:
+  name: actuator-deployment
+spec:
+  selector:
+    matchLabels:
+      app: actuator-app
+  replicas: 2 # Number of replicas that will be created for this deployment
+  template:
+    metadata:
+      labels:
+        app: actuator-app
+    spec:
+      containers:
+        - name: actuator-app
+          image: mayur22899/actuator-app:latest # Image that will be used to run containers in the cluster
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080 # The port that the container is running on in the cluster
+
+---
+
+apiVersion: v1 # Kubernetes API version
+kind: Service # Kubernetes resource kind we are creating
+metadata: # Metadata of the resource kind we are creating
+  name: actuator-service
+spec:
+  selector:
+    app: actuator-app
+  ports:
+    - protocol: "TCP"
+      port: 80 # The port that the service is running on in the cluster
+      targetPort: 8080 # The port exposed by the service (maps to containerPort)
+  type: LoadBalancer # type of the service
