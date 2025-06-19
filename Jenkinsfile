@@ -97,27 +97,24 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('build and Tag docker image') {
             steps {
-                echo "Building Docker image..."
-                sh "docker build -t ${DOCKERHUB_USER}/${IMAGE_NAME} -f ${DOCKERFILE_PATH} ."
+                script {
+                    sh "docker build -t mayur22899/actuator-app -f docker/Dockerfile ."
+                }
             }
         }
 
-      stage('Push Docker Image to DockerHub') {
-    steps {
-        echo "Pushing Docker image to DockerHub..."
-        script {
-            withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
-                sh """
-                    echo "${dockerhubpwd}" | docker login -u "${DOCKERHUB_USER}" --password-stdin
-                    docker push ${DOCKERHUB_USER}/${IMAGE_NAME}
-                """
+        stage('Push image to Hub') {
+            steps {
+                script {
+                    withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
+                        sh 'docker login -u mayur22899 -p ${dockerhubpwd}'
+                    }
+                    sh 'docker push mayur22899/actuator-app'
+                }
             }
         }
-    }
-}
-
 
         stage('Configure AWS EKS Access') {
             steps {
